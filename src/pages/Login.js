@@ -1,8 +1,36 @@
-import React from 'react';
-import logo from '../assets/logo.png';
+import React, { useState } from 'react';
+import './Login.css';
 
-export default function login () {
+import api from '../services/api';
+
+import logo from '../assets/logo.svg';
+
+export default function Login({ history }) {
+  const [username, setUsername] = useState('');
+  
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    const response = await api.post('/devs', {
+      username
+    })
+    
+    history.push('/main');
+
+    console.log(response);
+  }
+
   return (
-    <img src={logo} className="App-logo" alt="logo" />
-  );
+    <div className="login-container">
+      <form  onSubmit={handleSubmit}>
+        <img src={logo} className="App-logo" alt="logo" />
+        <input
+         placeholder="Digite seu usuário Gitihub"
+         value={username}
+         onChange={e => setUsername(e.target.value)}
+         />
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+);
 }
